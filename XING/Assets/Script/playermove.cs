@@ -7,15 +7,15 @@ public class playermove : MonoBehaviour {
     public GameObject Box;
 
     private Animator animator;
-    private GameObject gmManager;
 
-    public  float speed;
+    public int HP;
+    public int ATK;
+    public float speed=1;
 
     // Use this for initialization
     void Start () {
         //  bag.SetActive(false);
         animator = GetComponent<Animator>();
-        gmManager = GameObject.FindGameObjectWithTag("gmManager");
     }
 	
 	// Update is called once per frame
@@ -30,14 +30,18 @@ public class playermove : MonoBehaviour {
 
            
         
-        transform.position += new Vector3(x, y, 0)/10;
+        transform.position += new Vector3(x, y, 0)/10*speed;
         
     }
     private void OnCollisionStay2D(Collision2D collision) {
         if (collision.collider.name == "Boxn" && Input.GetKeyDown(KeyCode.T)) {
-            if (!tags.boxon) { tags.boxon = true; speed = 0; }
-            else { tags.boxon = false; speed = 1f; }
+            if (!tags.boxon) { tags.boxon = true;speed = 0;  }
+            else { tags.boxon = false; speed = 1; }
             Box.SetActive(tags.boxon);
         }
+    }
+    public void TakeDamage(int lossFood)
+    {
+        HP -= lossFood;
     }
 }

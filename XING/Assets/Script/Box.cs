@@ -6,22 +6,48 @@ using System.IO;
 using System.Text;
 
 public class Box : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
+    public Baginfo Bag;
+    public GameObject Info;
+    public Transform kuang;
+    public Transform Now;
+    public Transform Then;
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
 	// Update is called once per frame
 	void Update () {
         FreshBox();
-	}
+        Freshinfo();
+        Equip();
+    }
+    public void Equip() {
+        if (Input.GetKeyDown(KeyCode.J)) {
+            tags.weapon1id = tags.Boxinfoid;
+            Now.transform.position = GameObject.Find("thing" + tags.weapon1id.ToString()).GetComponent<Transform>().position;
+        }
+        if (Input.GetKeyDown(KeyCode.K)) {
+            tags.weapon2id = tags.Boxinfoid;
+            Then.transform.position = GameObject.Find("thing" + tags.weapon2id.ToString()).GetComponent<Transform>().position;
+        }
+    }
+    public void Freshinfo() {
+        Bag.Freshweapon(Info, tags.Boxinfoid+1);
+        if (Input.GetKeyDown(KeyCode.UpArrow)) tags.Boxinfoid -= 3;
+        if (Input.GetKeyDown(KeyCode.DownArrow)) tags.Boxinfoid += 3;
+        if (Input.GetKeyDown(KeyCode.LeftArrow)) tags.Boxinfoid -= 1;
+        if (Input.GetKeyDown(KeyCode.RightArrow)) tags.Boxinfoid += 1;
+        if (tags.Boxinfoid < 0) tags.Boxinfoid = 0;
+        if (tags.Boxinfoid > tags.boxcount-1) tags.Boxinfoid = tags.boxcount-1;
+        kuang.transform.position = GameObject.Find("thing" + tags.Boxinfoid.ToString()).GetComponent<Transform>().position;
+        
+    }
     public void Readbox() {
         int id, boxcount = 0; ;
         string line;
         FileStream path = new FileStream(Application.streamingAssetsPath + "\\save.csv", FileMode.Open);
         StreamReader sr = new StreamReader(path);
-        tags.boxcount = int.Parse(sr.ReadLine());
         while ((line = sr.ReadLine()) != null) {
             id = int.Parse(line);
             Weapon w = tags.library.Find(s => s.ID == id);
@@ -29,8 +55,7 @@ public class Box : MonoBehaviour {
             boxcount++;
         }
         tags.boxcount = boxcount;
-
-        Debug.Log(tags.boxcount);
+    
         sr.Close();
     }
     public void FreshBox() {

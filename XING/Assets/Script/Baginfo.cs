@@ -21,7 +21,6 @@ public class Baginfo : MonoBehaviour {
 		
 	}
     public void Freshweapon(GameObject weapon,int id) {
-        Debug.Log(id);
         Weapon info = tags.library.Find(s => s.ID == id);
         Image[] childi = weapon.GetComponentsInChildren<Image>();
         childi[1].sprite= Resources.Load(info.ID.ToString(), typeof(Sprite)) as Sprite;
@@ -33,5 +32,4 @@ public class Baginfo : MonoBehaviour {
         childt[3].text = info.effcount.ToString();
         childt[4].text = info.explain;
     }
-    
 }

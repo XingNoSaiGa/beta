@@ -5,13 +5,12 @@ using UnityEngine;
 public class EnemyAI : MonoBehaviour {
     private Rigidbody2D rigidbody;
     private BoxCollider2D colider;
+    public GameObject rot;
 
 
     public float moveSpeed = 5;
     private Vector2 targetPosition;
     private Transform player;
-    private Transform gmManager;
-
     enemyData data = new enemyData();
     private Animator animator;
     public int HP;
@@ -30,7 +29,7 @@ public class EnemyAI : MonoBehaviour {
         targetPosition = transform.position;
         player = GameObject.FindGameObjectWithTag("Player").transform;//获得主角位置（2）
         animator = GetComponent<Animator>();
-        gmManager = GameObject.FindGameObjectWithTag("gmManager").transform;
+
 
     }
     class enemyData
@@ -53,14 +52,14 @@ public class EnemyAI : MonoBehaviour {
             Destroy(this.gameObject);
 
         Vector2 offset = player.position - transform.position;//获得主角位置与怪物位置的偏差
-        if (offset.magnitude < 1.5f&&GameManager.boolTransparency == 0)/*偏差*/
+        if (offset.magnitude < 1.1f)/*偏差*/
         {
-            
             if (timer > 1)
             {
                 //攻击
+                tags.pHP--;
                 animator.SetTrigger("Attack");//得到播放敌人攻击动画
-                gmManager.SendMessage("TakeDamage", ATK);
+                player.SendMessage("TakeDamage", ATK);
                 timer = 0;
             }
         }
@@ -69,13 +68,15 @@ public class EnemyAI : MonoBehaviour {
 
         //判断主角是否在怪物巡视范围内
         data.searchTime += Time.deltaTime;
-        if (searchDistance(player.position.x,player.position.y) < 5&&GameManager.boolTransparency == 0)
+        if (searchDistance(player.position.x,player.position.y) < 5)
         {
+            rot.SetActive(false);
             data.enemyState = 1;
             data.searchTime = 0;
         }
         else if (data.searchTime > 3)
         {
+            rot.SetActive(true);
             data.enemyState = 0;
         }
 
@@ -95,7 +96,6 @@ public class EnemyAI : MonoBehaviour {
 
     void patrol(enemyData date)
     {
-      
 
         if (date.i < position.Count)
         {

@@ -27,14 +27,13 @@ public class tags : MonoBehaviour {
     public static int pHP = 100;
     public static int pMP = 100;
 
-    public static int weapon1id = 1;
-    public static int weapon2id = 2;
+    public static int weapon1id = 0;
+    public static int weapon2id = 1;
+    public static int Boxinfoid = 0;
 
 
 
     public static int boxcount = 0;
     public static List<Weapon> library = new List<Weapon>();
     public static List<Weapon> box = new List<Weapon>();
-
-
 }

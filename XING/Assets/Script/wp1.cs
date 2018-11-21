@@ -17,14 +17,13 @@ public class wp1 : MonoBehaviour {
     // Update is called once per frame
     void Update () {
         if (Input.GetKeyDown(KeyCode.Tab)) {
-            int tmp = tags.weapon1id;
-            tags.weapon1id = tags.weapon2id;
-            tags.weapon2id = tmp;
-            Fresh();
-        }
+            int tmp = tags.weapon2id;
+            tags.weapon2id = tags.weapon1id;
+            tags.weapon1id = tmp;
+        }Fresh();
     }
     public void Fresh() {
-        childi[0].sprite = Resources.Load(tags.weapon1id.ToString(), typeof(Sprite)) as Sprite;
-        childi[1].sprite = Resources.Load(tags.weapon2id.ToString(), typeof(Sprite)) as Sprite;
+        childi[0].sprite = Resources.Load((tags.weapon1id+1).ToString(), typeof(Sprite)) as Sprite;
+        childi[1].sprite = Resources.Load((tags.weapon2id+1).ToString(), typeof(Sprite)) as Sprite;
     }
 }
