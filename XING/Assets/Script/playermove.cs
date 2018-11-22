@@ -7,8 +7,7 @@ public class playermove : MonoBehaviour {
     public GameObject Box;
 
     private Animator animator;
-
-    public int HP;
+    
     public int ATK;
     public float speed=1;
 
@@ -39,9 +38,9 @@ public class playermove : MonoBehaviour {
             else { tags.boxon = false; speed = 1; }
             Box.SetActive(tags.boxon);
         }
-    }
-    public void TakeDamage(int lossFood)
-    {
-        HP -= lossFood;
+        if (collision.collider.name == "HPmed") {
+            tags.pHP += 25;
+            Destroy(collision.gameObject);
+        }
     }
 }

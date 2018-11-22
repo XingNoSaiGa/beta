@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{586CE040-F518-3A10-DA60-4859EA5B21CC}</ProjectGuid>
+    <ProjectGuid>{A6AD03EB-6A07-2DEB-2496-FA696DA1982F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -66,6 +66,7 @@
     <Compile Include="Assets\Collider2D Optimization\ShapeOptimizationHelper.cs" />
     <Compile Include="Assets\Script\Baginfo.cs" />
     <Compile Include="Assets\Script\Box.cs" />
+    <Compile Include="Assets\Script\CameraFollow.cs" />
     <Compile Include="Assets\Script\EnemyAI.cs" />
     <Compile Include="Assets\Script\exp.cs" />
     <Compile Include="Assets\Script\GameManager.cs" />
@@ -76,16 +77,16 @@
     <Compile Include="Assets\Script\wp1.cs" />
     <None Include="Assets\Collider2D Optimization\readme.txt" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>E:/Unity/XingNoSaiGa/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>E:/Unity/beta/XING/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>E:/Unity/XingNoSaiGa/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>E:/Unity/beta/XING/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>E:/Unity/XingNoSaiGa/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>E:/Unity/beta/XING/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>E:/Unity/XingNoSaiGa/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>E:/Unity/beta/XING/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>D:/Program Files/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>
