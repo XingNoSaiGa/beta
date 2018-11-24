@@ -6,31 +6,41 @@ public class EnemyAI : MonoBehaviour {
     private Rigidbody2D rigidbody;
     private BoxCollider2D colider;
     public GameObject rot;
+    public GameObject notice;
 
 
     public float moveSpeed = 5;
     private Vector2 targetPosition;
     private Transform player;
+    private Transform gmManager;
     enemyData data = new enemyData();
+    stopPosition lastPosition = new stopPosition();
     private Animator animator;
     public int HP;
     public int ATK;
     public float attackSpeed;
-
+    
     private float timer = 0;
     public List<Transform> position = new List<Transform>();
-
+   
 
     // Use this for initialization
     void Start()
     {
+        notice.SetActive(false);
         rigidbody = GetComponent<Rigidbody2D>();
         colider = GetComponent<BoxCollider2D>();
         targetPosition = transform.position;
         player = GameObject.FindGameObjectWithTag("Player").transform;//获得主角位置（2）
+        gmManager = GameObject.FindGameObjectWithTag("gmManager").transform;
         animator = GetComponent<Animator>();
-
-
+        
+        
+    }
+    class stopPosition
+    {
+        public Vector2 playerPosition;//主角隐身后最后的地点
+        public int boolTrace = 1;//是否去最后的位置
     }
     class enemyData
     {
@@ -51,25 +61,13 @@ public class EnemyAI : MonoBehaviour {
         if (HP <= 0)
             Destroy(this.gameObject);
 
-        Vector2 offset = player.position - transform.position;//获得主角位置与怪物位置的偏差
-        if (offset.magnitude < 1.1f)/*偏差*/
-        {
-            if (timer > 1)
-            {
-                //攻击
-                tags.pHP--;
-                animator.SetTrigger("Attack");//得到播放敌人攻击动画
-                player.SendMessage("TakeDamage", ATK);
-                timer = 0;
-            }
-        }
-
         data.step = moveSpeed * Time.deltaTime;
 
         //判断主角是否在怪物巡视范围内
         data.searchTime += Time.deltaTime;
-        if (searchDistance(player.position.x,player.position.y) < 5)
+        if (searchDistance(player.position.x, player.position.y) < 5&&GameManager.boolTransparency == 0)
         {
+            notice.SetActive(true);
             rot.SetActive(false);
             data.enemyState = 1;
             data.searchTime = 0;
@@ -79,7 +77,8 @@ public class EnemyAI : MonoBehaviour {
             rot.SetActive(true);
             data.enemyState = 0;
         }
-
+        if (data.searchTime > 1)
+            notice.SetActive(false);
 
         switch (data.enemyState)
         {
@@ -96,10 +95,14 @@ public class EnemyAI : MonoBehaviour {
 
     void patrol(enemyData date)
     {
-
-        if (date.i < position.Count)
+        Vector2 offset = player.position - transform.position;//获得主角位置与怪物位置的偏差
+        if (offset.magnitude < 1.1f)
+            attack();
+        else  if (date.i < position.Count)
         {
-            gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition, new Vector3(position[date.i].position.x, position[date.i].position.y, 0), date.step);
+            gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition, 
+                new Vector3(position[date.i].position.x, position[date.i].position.y, 0), date.step);
+
             if (searchDistance(position[date.i].position.x,position[date.i].position.y) < 1)
             {
                 if (date.oretation == 1)
@@ -144,10 +147,25 @@ public class EnemyAI : MonoBehaviour {
     }
     void trace(enemyData date)
     {
-        gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition, player.position, date.step);
+        Vector2 offset = player.position - transform.position;//获得主角位置与怪物位置的偏差
+        if (offset.magnitude < 1.1f)
+            attack();
+        else  if (GameManager.boolTransparency == 0) {
+            gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition, player.position, date.step);
+            lastPosition.boolTrace = 1;
+        }
+        else if (lastPosition.boolTrace == 1)
+        {
+            lastPosition.playerPosition = player.position;
+            lastPosition.boolTrace = 0;
+        }
+        else
+            gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition, lastPosition.playerPosition, date.step);
+
+
 
     }
-    float searchDistance(float positionX,float positionY)
+ float searchDistance(float positionX,float positionY)
     {
         float x = transform.position.x - positionX;
         float y = transform.position.y - positionY;
@@ -159,4 +177,18 @@ public class EnemyAI : MonoBehaviour {
 
         return ((x * x) + (y * y));
     }
-}
+
+    void attack()
+    {
+        if (timer > 1)
+            {
+            //攻击
+                GameManager.boolTransparency = 0;
+                tags.pHP--;
+                animator.SetTrigger("Attack");//得到播放敌人攻击动画
+                gmManager.SendMessage("TakeDamage", ATK);
+                timer = 0;
+            }
+        }
+    }
+
