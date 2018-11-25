@@ -72,6 +72,7 @@
     <Compile Include="Assets\Script\GameManager.cs" />
     <Compile Include="Assets\Script\playermove.cs" />
     <Compile Include="Assets\Script\Rotate.cs" />
+    <Compile Include="Assets\Script\skills.cs" />
     <Compile Include="Assets\Script\tags.cs" />
     <Compile Include="Assets\Script\UImanager.cs" />
     <Compile Include="Assets\Script\wp1.cs" />

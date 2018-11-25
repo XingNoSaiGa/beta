@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour {
     public Transform player;
+    public float edge;
 	// Use this for initialization
 	void Start () {
 		
@@ -12,10 +13,10 @@ public class CameraFollow : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         float x = 0, y = 0;
-        if (player.position.x > -9f && player.position.x < 9f) x = player.position.x;
-        else if (player.position.x <= -9f) x = -9f; else x = 9f;
-        if (player.position.y > -16f && player.position.y < 16f) y = player.position.y;
-        else if (player.position.y <= -16f) y = -16f; else y = 16f;
+        if (player.position.x > -edge && player.position.x < edge) x = player.position.x;
+        else if (player.position.x <= -edge) x = -edge; else x = edge;
+        if (player.position.y > -edge && player.position.y < edge) y = player.position.y;
+        else if (player.position.y <= -edge) y = -edge; else y = edge;
         transform.position = new Vector3(x, y, -10f);
 
     }
