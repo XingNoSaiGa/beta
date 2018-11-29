@@ -39,8 +39,9 @@ public class GameManager : MonoBehaviour {
         Mp.GetComponent<Slider>().value = tags.pMP;
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
-            if (tags.bagon) {tags.bagon = false;tags.uion = true;}
-            else { tags.bagon = true; tags.uion = false; }
+            if (tags.boxon) {tags.bagon = false; tags.uion = true;tags.boxon = false;Box.SetActive(false);tags.pspeed = 1; }
+            else if (tags.bagon) {tags.bagon = false;tags.uion = true; tags.pspeed = 1; }
+            else { tags.bagon = true; tags.uion = false; tags.pspeed = 0; }
             UI.SetActive(tags.uion);
             Bag.SetActive(tags.bagon);
         }

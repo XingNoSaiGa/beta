@@ -9,7 +9,6 @@ public class playermove : MonoBehaviour {
     private Animator animator;
     
     public int ATK;
-    public float speed=1;
 
     // Use this for initialization
     void Start () {
@@ -22,23 +21,16 @@ public class playermove : MonoBehaviour {
 
         float x = Input.GetAxis("Horizontal");
         float y = Input.GetAxis("Vertical");
-        if (x > 0)
-            animator.Play("rightMove");
-        if (x < 0)
-            animator.Play("leftMove");
-
-           
-        
-        transform.position += new Vector3(x, y, 0)/10*speed;
-        
+        if (x > 0)animator.Play("rightMove");
+        if (x < 0)animator.Play("leftMove");
+        transform.position += new Vector3(x, y, 0)/10*tags.pspeed;
     }
-    private void OnCollisionStay2D(Collision2D collision) {
-        if (collision.collider.name == "Boxn" && Input.GetKeyDown(KeyCode.T)) {
-            if (!tags.boxon) { tags.boxon = true;speed = 0;  }
-            else { tags.boxon = false; speed = 1; }
-            Box.SetActive(tags.boxon);
+
+    private void OnTriggerStay2D(Collider2D collision) {
+        if (collision.name == "Boxn" && Input.GetKeyDown(KeyCode.T)) {
+            if (!tags.boxon) { tags.boxon = true; Box.SetActive(tags.boxon); tags.pspeed = 0; }
         }
-        if (collision.collider.name == "HPmed") {
+        if (collision.name == "HPmed") {
             tags.pHP += 25;
             Destroy(collision.gameObject);
         }

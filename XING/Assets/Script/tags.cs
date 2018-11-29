@@ -26,6 +26,7 @@ public class tags : MonoBehaviour {
 
     public static int pHP = 100;
     public static int pMP = 100;
+    public static float pspeed = 1f;
 
     public static int weapon1id = 0;
     public static int weapon2id = 1;
