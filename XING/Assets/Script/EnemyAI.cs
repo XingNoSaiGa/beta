@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAI : MonoBehaviour {
+public class EnemyAI : MonoBehaviour
+{
     private Rigidbody2D rigidbody;
     private BoxCollider2D colider;
     public GameObject rot;
@@ -19,10 +20,10 @@ public class EnemyAI : MonoBehaviour {
     public int HP;
     public int ATK;
     public float attackSpeed;
-    
+
     private float timer = 0;
     public List<Transform> position = new List<Transform>();
-   
+
 
     // Use this for initialization
     void Start()
@@ -34,8 +35,8 @@ public class EnemyAI : MonoBehaviour {
         player = GameObject.FindGameObjectWithTag("Player").transform;//获得主角位置（2）
         gmManager = GameObject.FindGameObjectWithTag("gmManager").transform;
         animator = GetComponent<Animator>();
-        
-        
+
+
     }
     class stopPosition
     {
@@ -52,6 +53,7 @@ public class EnemyAI : MonoBehaviour {
         public int i = 0;
         public float distance;
         public int enemyState = 0;//敌人的状态
+        public int isFirst = 1;
 
     }
     // Update is called once per frame
@@ -65,7 +67,7 @@ public class EnemyAI : MonoBehaviour {
 
         //判断主角是否在怪物巡视范围内
         data.searchTime += Time.deltaTime;
-        if (searchDistance(player.position.x, player.position.y) < 5&&GameManager.boolTransparency == 0)
+        if (searchDistance(player.position.x, player.position.y) < 7 && GameManager.boolTransparency == 0)
         {
             notice.SetActive(true);
             rot.SetActive(false);
@@ -98,12 +100,12 @@ public class EnemyAI : MonoBehaviour {
         Vector2 offset = player.position - transform.position;//获得主角位置与怪物位置的偏差
         if (offset.magnitude < 1.1f)
             attack();
-        else  if (date.i < position.Count)
+        else if (date.i < position.Count)
         {
-            gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition, 
+            gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition,
                 new Vector3(position[date.i].position.x, position[date.i].position.y, 0), date.step);
 
-            if (searchDistance(position[date.i].position.x,position[date.i].position.y) < 1)
+            if (searchDistance(position[date.i].position.x, position[date.i].position.y) < 0.01)
             {
                 if (date.oretation == 1)
                     date.i = (date.i + 1) % position.Count;
@@ -150,7 +152,14 @@ public class EnemyAI : MonoBehaviour {
         Vector2 offset = player.position - transform.position;//获得主角位置与怪物位置的偏差
         if (offset.magnitude < 1.1f)
             attack();
-        else  if (GameManager.boolTransparency == 0) {
+        else if (GameManager.boolTransparency == 0 && date.isFirst == 1)
+        {
+            gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition, player.position, date.step);
+            lastPosition.boolTrace = 1;
+
+        }
+        else if (GameManager.boolTransparency == 0 && date.isFirst == 0 && searchDistance(player.position.x, player.position.y) < 14)
+        {
             gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition, player.position, date.step);
             lastPosition.boolTrace = 1;
         }
@@ -158,14 +167,17 @@ public class EnemyAI : MonoBehaviour {
         {
             lastPosition.playerPosition = player.position;
             lastPosition.boolTrace = 0;
+            date.isFirst = 0;
         }
+        else if (lastPosition.boolTrace == 0 && GameManager.boolTransparency == 0 && searchDistance(player.position.x, player.position.y) < 10)
+            lastPosition.boolTrace = 1;
         else
             gameObject.transform.localPosition = Vector3.MoveTowards(gameObject.transform.localPosition, lastPosition.playerPosition, date.step);
 
 
 
     }
- float searchDistance(float positionX,float positionY)
+    float searchDistance(float positionX, float positionY)
     {
         float x = transform.position.x - positionX;
         float y = transform.position.y - positionY;
@@ -181,14 +193,14 @@ public class EnemyAI : MonoBehaviour {
     void attack()
     {
         if (timer > 1)
-            {
+        {
             //攻击
-                GameManager.boolTransparency = 0;
-                tags.pHP--;
-                animator.SetTrigger("Attack");//得到播放敌人攻击动画
-                gmManager.SendMessage("TakeDamage", ATK);
-                timer = 0;
-            }
+            GameManager.boolTransparency = 0;
+            tags.pHP--;
+            animator.SetTrigger("Attack");//得到播放敌人攻击动画
+            gmManager.SendMessage("TakeDamage", ATK);
+            timer = 0;
         }
     }
+}
 
