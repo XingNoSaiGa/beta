@@ -6025,7 +6025,7 @@ Rigidbody2D:
   m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 0
   m_Constraints: 7
 --- !u!1 &791640816
@@ -7735,6 +7735,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f541731be99e4458122fae8c939b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attackDirection: 1
 --- !u!1 &1163079912
 GameObject:
   m_ObjectHideFlags: 0

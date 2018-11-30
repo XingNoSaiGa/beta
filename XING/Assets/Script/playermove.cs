@@ -32,6 +32,7 @@ public class playermove : MonoBehaviour {
         }
         if (collision.name == "HPmed") {
             tags.pHP += 25;
+            if (tags.pHP > 100) tags.pHP = 100;
             Destroy(collision.gameObject);
         }
     }

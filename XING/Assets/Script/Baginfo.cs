@@ -12,13 +12,13 @@ public class Baginfo : MonoBehaviour {
 
     // Use this for initialization
     public void Init () {
-        Freshweapon(weapon1, tags.weapon1id);
-        Freshweapon(weapon2, tags.weapon2id);
+        Freshweapon(weapon1, tags.weapon1id+1);
+        Freshweapon(weapon2, tags.weapon2id+1);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        Init();
 	}
     public void Freshweapon(GameObject weapon,int id) {
         Weapon info = tags.library.Find(s => s.ID == id);
